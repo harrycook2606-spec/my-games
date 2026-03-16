@@ -1,0 +1,46 @@
+const games = [
+    { title: "Slope", url: "https://example.com/slope-game", thumb: "https://via.placeholder.com/150" },
+    { title: "1v1.lol", url: "https://1v1.lol", thumb: "https://via.placeholder.com/150" },
+    { title: "Retro Bowl", url: "https://example.com/retro-bowl", thumb: "https://via.placeholder.com/150" }
+];
+
+function loadGames() {
+    const grid = document.getElementById('gameGrid');
+    grid.innerHTML = '';
+    games.forEach(game => {
+        const card = document.createElement('div');
+        card.className = 'game-card';
+        card.onclick = () => openGame(game.url);
+        card.innerHTML = `
+            <img src="${game.thumb}" alt="${game.title}">
+            <h3>${game.title}</h3>
+        `;
+        grid.appendChild(card);
+    });
+}
+
+function openGame(url) {
+    document.getElementById('gameFrame').src = url;
+    document.getElementById('gameModal').style.display = "block";
+}
+
+function closeGame() {
+    document.getElementById('gameModal').style.display = "none";
+    document.getElementById('gameFrame').src = "";
+}
+
+function filterGames() {
+    let input = document.getElementById('searchBar').value.toLowerCase();
+    let cards = document.getElementsByClassName('game-card');
+    
+    for (let i = 0; i < cards.length; i++) {
+        let title = cards[i].getElementsByTagName("h3")[0].innerText;
+        cards[i].style.display = title.toLowerCase().includes(input) ? "" : "none";
+    }
+}
+
+// "Tab Cloaking" - Changes tab name when you switch away
+window.onblur = function () { document.title = "Google Docs"; };
+window.onfocus = function () { document.title = "My Unblocked Games"; };
+
+loadGames();
